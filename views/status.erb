@@ -1,0 +1,11 @@
+<h1>Status of projects</h1>
+
+
+<table border="0" cellspacing="5" cellpadding="5">
+	<% for job in (jobs = Resque.peek('finished_project', 0, 20)) %>
+	<tr>
+		<td class='class'><%= job['args'][0] %></td>
+		<td class='args'>  <img src="data:image/png;base64,<%= job['args'][1] %>" alt="Base 64 encoded!" /></td>
+	</tr>   
+	<% end %>
+</table>  
