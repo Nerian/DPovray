@@ -6,7 +6,7 @@ module DPovray
   module Project
     @queue = :render_project
 
-    def self.perform(scene, name, params)
+    def self.perform(scene, params)
       `mkdir /tmp/dpovray`
       tmp_directory = "/tmp/dpovray/"+ params["name"] + '/'
       scene_file = tmp_directory + params["scene"]["filename"]
