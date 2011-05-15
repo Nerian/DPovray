@@ -1,12 +1,23 @@
-require 'resque'
-require 'base64'
-require 'date'
-
 module DPovray
   module Project
     @queue = :render_project
+    
+    def self.create(params)                                                                                                    
+      project = 
+      {
+        name:params[:name], 
+        id:rand(10000), 
+        image:'',
+        options:
+          {
+            height:params[:height], 
+            width:params[:width], 
+            scene:params[:scene]
+          }
+        }
+    end
 
-    def self.perform(scene, params)
+    def self.perform(scene, params)                  
       `mkdir /tmp/dpovray`
       tmp_directory = "/tmp/dpovray/"+ params["name"] + '/'
       scene_file = tmp_directory + params["scene"]["filename"]
@@ -19,12 +30,4 @@ module DPovray
       puts "Processed a job!"
     end
   end
-  
-  module FinishedProject
-    @queue = :finished_project
-
-    def self.perform(params)
-      puts 'Project succefully completed.'
-    end
-  end
-end                         
+end
