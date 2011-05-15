@@ -1,11 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'resque'
-require 'erb'          
-               
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-
-require 'job'
+require 'erb'                       
 
 module DPovray
   class App < Sinatra::Base

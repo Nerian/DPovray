@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 require 'logger'
-require './app'
 require 'resque/server'
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib') 
+require 'dpovray'
 
 use Rack::ShowExceptions
 
