@@ -9,7 +9,7 @@ describe DPovray::App do
     it "add a new project" do
       send_a_scene                    
       DPovray::Task.should have_queue_size_of(10)     
-    end                       
+    end   
   end  
 end   
 

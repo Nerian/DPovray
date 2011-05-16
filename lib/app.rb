@@ -19,21 +19,7 @@ module DPovray
       Splitter.split_project_in_many_tasks(project).each do |task|  
         Resque.enqueue(Task, task)        
       end
-      redirect :status
-    end
-    
-    get '/status' do
-      erb :status
-    end
-      
-    
-    get '/get_file' do
-      
-    end
-    
-    post '/failing' do 
-      #Resque.enqueue(FailingJob, params)
-      #redirect "/"
-    end
+      redirect "/resque"
+    end        
   end
 end
