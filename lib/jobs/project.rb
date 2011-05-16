@@ -1,19 +1,18 @@
 module DPovray
-  module Project
-    @queue = :render_project
-    
+  module Project    
     def self.create(params)                                                                                                    
       project = 
       {
         name:params[:name], 
         id:rand(10000), 
         image:'',
+        partial_images:[],
         options:
           {
             height:params[:height], 
             width:params[:width], 
             scene:params[:scene]
-          }
+          }        
         }
     end
 

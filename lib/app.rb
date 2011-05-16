@@ -15,10 +15,12 @@ module DPovray
         :height => params["height"].to_i, 
         :width => params["width"].to_i,
         :scene => params['scene'][:tempfile].read)
-      
-      Splitter.split_project_in_many_tasks(project).each do |task|  
-        Resque.enqueue(Task, task)        
-      end
+                  
+      tasks, project = Splitter.split_project_in_many_tasks(project)          
+      Redis.new.hset('active_projects', project[:id], project)
+      tasks.each do |task|
+        Resque.enqueue(Task, task)
+      end                    
       redirect "/resque"
     end        
   end
