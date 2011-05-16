@@ -2,8 +2,7 @@ module DPovray
   module Splitter
     
     def self.split_project_in_many_tasks(project)                 
-      tasks = []          
-
+      tasks = []                              
       max_line = project[:options][:height]
 
       line = 0
@@ -16,7 +15,7 @@ module DPovray
             height:project[:options][:height], 
             width:project[:options][:width], 
             start_row:line_start, 
-            start_column:0, 
+            start_column:1, 
             end_row:line_end, 
             end_column:project[:options][:width],
             scene:project[:options][:scene]      
@@ -24,9 +23,7 @@ module DPovray
           }
         line +=10
       end
-      tasks
-            
-    end
-  
+      tasks            
+    end  
   end
 end
