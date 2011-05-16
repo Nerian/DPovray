@@ -10,7 +10,15 @@ module DPovray
     end
 
     post '/' do                                               
-      Resque.enqueue(Project, params['scene'][:tempfile].read, params)            
+      project = Project.create(
+        :name => params["name"], 
+        :height => params["height"].to_i, 
+        :width => params["width"].to_i,
+        :scene => params['scene'][:tempfile].read)
+      
+      Splitter.split_project_in_many_tasks(project).each do |task|  
+        Resque.enqueue(Task, task)        
+      end
       redirect :status
     end
     

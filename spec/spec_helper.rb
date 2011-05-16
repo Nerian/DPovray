@@ -1,6 +1,12 @@
 require 'rspec'
 require 'rack/test' 
-require 'dpovray'  
+require 'dpovray'
+require 'capybara'   
+require 'capybara/rspec'   
+include Capybara::DSL
+require 'resque_spec'
+
+Capybara.app = DPovray::App                  
 
 set :environment, :test 
 
