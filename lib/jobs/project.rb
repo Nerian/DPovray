@@ -6,7 +6,7 @@ module DPovray
         name:params[:name], 
         id:rand(10000), 
         image:'',
-        partial_images:[],
+        tasks:[],
         options:
           {
             height:params[:height], 

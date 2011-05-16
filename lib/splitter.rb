@@ -24,7 +24,7 @@ module DPovray
             }
           }
         tasks << task           
-        project_with_task[:partial_images] << task
+        project_with_task[:tasks] << task
         line +=10
       end
       return tasks, project_with_task

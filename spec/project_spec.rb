@@ -24,7 +24,7 @@ describe DPovray::Project do
     end
     describe "#partial_images" do
       it "should be set" do
-        DPovray::Project.create(params)[:partial_images].should be
+        DPovray::Project.create(params)[:tasks].should be
       end
     end
     describe '#options' do                
