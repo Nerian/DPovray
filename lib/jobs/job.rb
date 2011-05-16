@@ -23,23 +23,19 @@ module DPovray
                 
     def self.perform(task)               
       `mkdir /tmp/dpovray`
-      tmp_directory = "/tmp/dpovray/"+ task[:project].to_s + '/'
+      tmp_directory = "/tmp/dpovray/"+ task['project'].to_s + '/'
       scene_file = tmp_directory + 'scene.pov'
       system("mkdir #{tmp_directory}")                    
       File.open(scene_file, "w") do |f|
-          f.write(task[:options][:scene])
+          f.write(task['options']['scene'])
       end
       system("povray #{scene_file} +O#{tmp_directory}image.png 2>/dev/null")                                                                                                        
-      #task[:partial_image] = Base64.encode64(File.read("#{tmp_directory}image.png"))
-      task[:options][:scene] = 0
-          
-
-      puts task                              
-                        
+      task['partial_image'] = Base64.encode64(File.read("#{tmp_directory}image.png"))                
+                              
       redis.multi do                                             
-        project = redis.hget('active_projects', task[:project])        
-        project[:tasks][task[:order]] 
-        redis.hset('active_projects', task[:project], project)        
+        project = JSON.parse(redis.hget('active_projects', task['project']))                 
+        project["tasks"][task['order']] = task
+        redis.hset('active_projects', task['project'], JSON.dump(project))        
       end                             
       puts "Processed a Task!"
       task

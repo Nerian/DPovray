@@ -3,7 +3,9 @@ require 'rack/test'
 require 'dpovray'
 require 'resque_spec' 
 require 'capybara'   
-require 'capybara/rspec'   
+require 'capybara/rspec'
+require 'redis/objects'         
+
 include Capybara::DSL
 
 Capybara.app = DPovray::App
@@ -12,7 +14,7 @@ set :environment, :test
 
 def app 
   Sinatra::Application
-end
+end     
 
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods    
@@ -24,7 +26,9 @@ end
 
 def redis
   Redis.new
-end
+end     
+
+Redis::Objects.redis = Redis.new(:host => '127.0.0.1', :port => 6379)
 
 def cleanup_redis
   redis.flushdb  
