@@ -22,10 +22,10 @@ module DPovray
     #    }
                 
     def self.perform(task)               
-      `mkdir /tmp/dpovray`
+      `mkdir -p /tmp/dpovray`
       tmp_directory = "/tmp/dpovray/"+ task['project'].to_s + '/'
       scene_file = tmp_directory + 'scene.pov'
-      system("mkdir #{tmp_directory}")                    
+      system("mkdir -p #{tmp_directory}")                    
       File.open(scene_file, "w") do |f|
           f.write(task['options']['scene'])
       end
