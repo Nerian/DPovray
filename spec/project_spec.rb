@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe DPovray::Project do
-  before do
-    ResqueSpec.reset!
-  end
-  
   describe 'Create a project' do
     let(:params) { {name:'Gondar', scene:'blablabla', height:50, width:70 } }
     describe '#name' do                

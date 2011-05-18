@@ -1,10 +1,10 @@
 require 'rspec'
 require 'rack/test' 
 require 'dpovray'
-require 'resque_spec' 
+#require 'resque_spec' 
 require 'capybara'   
 require 'capybara/rspec'
-require 'redis/objects'         
+require 'resque_unit'         
 
 include Capybara::DSL
 
@@ -21,14 +21,13 @@ RSpec.configure do |conf|
   
   conf.before(:each) do    
     cleanup_redis    
+    Resque.reset!
   end
 end
 
 def redis
   Redis.new
 end     
-
-Redis::Objects.redis = Redis.new(:host => '127.0.0.1', :port => 6379)
 
 def cleanup_redis
   redis.flushdb  
@@ -45,4 +44,5 @@ end
 
 def scene_file
   File.read(File.dirname(__FILE__)+"/support/buckyball.pov")
-end
+end             
+
