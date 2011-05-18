@@ -19,7 +19,7 @@ module DPovray
       tasks, project = Splitter.split_project_in_many_tasks(project)                
       Redis.new.hset('active_projects', project['id'], JSON.dump(project))
       tasks.each_value do |task|
-        Resque.enqueue(Task, task)
+        Resque.enqueue(DPovray::Task, JSON.dump(task))
       end                    
       redirect "/resque"
     end        

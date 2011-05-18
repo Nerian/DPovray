@@ -30,7 +30,7 @@ describe DPovray::App do
          projects = redis.hkeys('active_projects')         
          project = JSON.parse(redis.hget('active_projects', projects[0]))
          project['tasks'].each_value do |task| 
-           task['partial_image'].should be
+           task.partial_image.should be
          end                           
        end
        
