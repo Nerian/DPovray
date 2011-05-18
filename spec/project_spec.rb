@@ -10,7 +10,7 @@ describe DPovray::Project do
     end
     describe '#scene' do                
       it "should be set " do
-        DPovray::Project.create(params)['image'].should be
+        DPovray::Project.create(params)['image'].should == nil
       end
     end
     describe '#id' do                
@@ -36,5 +36,12 @@ describe DPovray::Project do
         DPovray::Project.create(params)['options']['scene'].should == params[:scene]
       end
     end        
+  end
+  
+  describe "A project" do    
+    context "is completed" do
+      let(:project) { {'name'=>'Pov', 'tasks'=>{}, 'id'=>1000, 'options'=>{'height'=>50, 'width'=>100, 'scene'=>'blabla'}, 'image'=>nil} }
+    end
+    pending
   end
 end

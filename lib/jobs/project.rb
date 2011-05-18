@@ -5,7 +5,7 @@ module DPovray
       {
         'name'=> params[:name], 
         'id'=> rand(10000), 
-        'image' => '',
+        'image' => nil,
         'tasks' => {},
         'options' =>
           {
@@ -29,4 +29,9 @@ module DPovray
      # puts "Processed a job!"
     end
   end
+
+  def self.completed?(project)    
+    project['tasks'].all? { |task| task['partial_image'] }  
+  end
+  
 end
