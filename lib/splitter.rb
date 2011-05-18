@@ -10,20 +10,17 @@ module DPovray
       while line < max_line.to_i do
         line_start = line+1
         line_end = line+10
-        task = {
-          'project'=>project['id'],
-          'order'=>counter.to_s, 
-          'partial_image'=>nil,          
-          'options'=>{
-            'height'=>project['options']['height'], 
-            'width'=>project['options']['width'], 
-            'start_row'=>line_start, 
-            'start_column'=>1, 
-            'end_row'=>line_end, 
-            'end_column'=>project['options']['width'],
-            'scene'=>project['options']['scene']      
-            }
-          }
+        
+        task = Task.new(project:project['id'], order:counter.to_s, 
+        options:{
+          'height'=>project['options']['height'], 
+          'width'=>project['options']['width'], 
+          'start_row'=>line_start, 
+          'start_column'=>1, 
+          'end_row'=>line_end, 
+          'end_column'=>project['options']['width'],
+          'scene'=>project['options']['scene']}
+          )
         project_with_task['tasks'][counter.to_s] = task
         line +=10
         counter +=1

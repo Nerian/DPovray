@@ -1,18 +1,28 @@
 require 'base64'
 
 module DPovray    
-  module Task
-    @queue = :tasks   
+  class Task
+    @queue = :tasks
+    
+    attr_accessor :project, :order, :partial_image, :options
     
     def self.queue
       @queue      
     end
     
+    def initialize(arguments)
+      @project = arguments[:project]
+      @partial_image = arguments[:partial_image] |= nil
+      @order = arguments[:order]      
+      @options = arguments[:options]      
+    end   
+    
     # The json structure of a task is:
     #
     #task = {
     #  project:1000, 
-    #  partial_image:nil, 
+    #  partial_image:nil,
+    #  order:'1' 
     #  options:
     #    {
     #      height:50, 

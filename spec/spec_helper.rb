@@ -4,7 +4,8 @@ require 'dpovray'
 #require 'resque_spec' 
 require 'capybara'   
 require 'capybara/rspec'
-require 'resque_unit'         
+require 'resque_unit'
+         
 
 include Capybara::DSL
 
@@ -26,7 +27,7 @@ RSpec.configure do |conf|
 end
 
 def redis
-  Redis.new
+   Redis.new
 end     
 
 def cleanup_redis
