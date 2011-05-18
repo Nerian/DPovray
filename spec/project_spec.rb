@@ -23,24 +23,24 @@ describe DPovray::Project do
         DPovray::Project.create(params)['tasks'].should be
       end
     end
-    describe '#options' do                
+    describe '#povray_options' do                
       it "should has height " do
-        DPovray::Project.create(params)['options']['height'].should == params[:height]
+        DPovray::Project.create(params)['povray_options']['height'].should == params[:height]
       end
       
       it "should has width " do
-        DPovray::Project.create(params)['options']['width'].should == params[:width]
+        DPovray::Project.create(params)['povray_options']['width'].should == params[:width]
       end
       
       it "should has an scene file" do
-        DPovray::Project.create(params)['options']['scene'].should == params[:scene]
+        DPovray::Project.create(params)['povray_options']['scene'].should == params[:scene]
       end
     end        
   end
   
   describe "A project" do    
     context "is completed" do
-      let(:project) { {'name'=>'Pov', 'tasks'=>{}, 'id'=>1000, 'options'=>{'height'=>50, 'width'=>100, 'scene'=>'blabla'}, 'image'=>nil} }
+      let(:project) { {'name'=>'Pov', 'tasks'=>{}, 'id'=>1000, 'povray_options'=>{'height'=>50, 'width'=>100, 'scene'=>'blabla'}, 'image'=>nil} }
     end
     pending
   end

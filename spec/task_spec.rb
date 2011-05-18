@@ -3,12 +3,9 @@ require 'spec_helper'
 describe DPovray::Task do                                                                                                                            
   describe "A worker should" do
     context "be able to perform Task that contains the whole image" do
-      let(:task){ DPovray::Task.new(project:1000, order:'0', options:{'height'=>50, 'width'=>50, 'start_row'=>1,  'start_column'=>1, 'end_row'=>50, 'end_column'=>50, 'scene'=>'blabla' }) }
+      let(:task){ DPovray::Task.make }
       
-      before :each do                                          
-        #list  = Redis::List.new('active_projects', redis)          
-        #list[active_project[:id]] = active_project
-        
+      before :each do                                                  
         Redis.new.hset('active_projects', active_project['id'], JSON.dump(active_project))        
       end
       
@@ -32,30 +29,15 @@ def active_project
     'name' => 'Pov', 
     'tasks' =>
       {
-        "0" => 
-        {
-          'project' => 1000, 
-          'order' => "0", 
-          'partial_image' => nil, 
-          'options' =>
-            {
-              'height' => 50, 
-              'width' => 50, 
-              'start_row' => 1,  
-              'start_column' => 1, 
-              'end_row' => 50, 
-              'end_column' => 50, 
-              'scene' => 'blabla' 
-            }
-          }
+        "0" => DPovray::Task.make
       }, 
     'id' => 1000, 
     'image' => '',
-    'options' =>
+    'povray_options' =>
       {
         'height' =>100,
         'width' => 50,
-        'scene' => 'blabla'
+        'scene' => scene_file
       }
     }
 end

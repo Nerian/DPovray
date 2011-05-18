@@ -1,10 +1,11 @@
 require 'rspec'
 require 'rack/test' 
-require 'dpovray'
-#require 'resque_spec' 
+require 'dpovray' 
 require 'capybara'   
 require 'capybara/rspec'
 require 'resque_unit'
+require 'machinist'
+require 'support/blueprints'
          
 
 include Capybara::DSL

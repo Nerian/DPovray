@@ -34,7 +34,8 @@ describe DPovray::App do
          end                           
        end
        
-       it "should merge the image when the project is completed" do
+       it "should merge the image when the project is completed" do             
+         pending()
          projects = redis.hkeys('active_projects')         
          project = JSON.parse(redis.hget('active_projects', projects[0]))
          project['image'].should be

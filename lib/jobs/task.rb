@@ -1,56 +1,42 @@
 require 'base64'
+require 'machinist'
 
 module DPovray    
   class Task
-    @queue = :tasks
+    extend Machinist::Machinable                                    
     
-    attr_accessor :project, :order, :partial_image, :options
+    attr_accessor :project, :order, :partial_image, :povray_options
+    
+    @queue = :tasks 
     
     def self.queue
-      @queue      
+      @queue
     end
-    
+                                     
     def to_json(*a)
         {
           'json_class' => self.class.name,
-          'data' => { 'project' => @project, 'order' => @order, 'partial_image' => @partial_image, 'options'=> @options }
+          'data' => { 'project' => @project, 'order' => @order, 'partial_image' => @partial_image, 'povray_options'=> @povray_options }
         }.to_json(*a)
-      end
+    end
 
-      def self.json_create(o)
-        new(project: o['data']['project'], order: o['data']['order'], partial_image: o['data']['partial_image'], options: o['data']['options'])
-      end
+    def self.json_create(o)
+      new(project: o['data']['project'], order: o['data']['order'], partial_image: o['data']['partial_image'], povray_options: o['data']['povray_options'])
+    end       
     
-    def initialize(arguments)
+    def initialize(arguments={})
       @project = arguments[:project]
       @partial_image = arguments[:partial_image]
+      @povray_options = arguments[:povray_options]
       @order = arguments[:order]      
-      @options = arguments[:options]      
+            
     end   
-    
-    # The json structure of a task is:
-    #
-    #task = {
-    #  project:1000, 
-    #  partial_image:nil,
-    #  order:'1' 
-    #  options:
-    #    {
-    #      height:50, 
-    #      width:50, 
-    #      start_row:1,  
-    #      start_column:1, 
-    #      end_row:10, 
-    #      end_column:50, 
-    #      scene: 'blabla' 
-    #      }
-    #    }  
     
     def ==(another_task)
       self.project == another_task.project and 
       self.order == another_task.order and 
       self.partial_image == another_task.partial_image and 
-      self.options == another_task.options                        
+      self.povray_options == another_task.povray_options                        
     end
                 
     def self.perform(task)                                                 
@@ -60,7 +46,7 @@ module DPovray
       scene_file = tmp_directory + 'scene.pov'
       system("mkdir -p #{tmp_directory}")                    
       File.open(scene_file, "w") do |f|
-          f.write(task.options['scene'])
+          f.write(task.povray_options['scene'])
       end
       system("povray #{scene_file} +O#{tmp_directory}image.png 2>/dev/null")                                                                                                        
       task.partial_image = Base64.encode64(File.read("#{tmp_directory}image.png"))                

@@ -7,7 +7,7 @@ module DPovray
         'id'=> rand(10000), 
         'image' => nil,
         'tasks' => {},
-        'options' =>
+        'povray_options' =>
           {
             'height' => params[:height], 
             'width' => params[:width], 
