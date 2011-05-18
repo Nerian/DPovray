@@ -4,6 +4,10 @@ module DPovray
   module Task
     @queue = :tasks   
     
+    def self.queue
+      @queue      
+    end
+    
     # The json structure of a task is:
     #
     #task = {
@@ -21,9 +25,9 @@ module DPovray
     #      }
     #    }
                 
-    def self.perform(task)               
+    def self.perform(task)                            
       `mkdir -p /tmp/dpovray`
-      tmp_directory = "/tmp/dpovray/"+ task['project'].to_s + '/'
+      tmp_directory = "/tmp/dpovray/"+ task['project'].to_s + '/' + task['order'] + '/'
       scene_file = tmp_directory + 'scene.pov'
       system("mkdir -p #{tmp_directory}")                    
       File.open(scene_file, "w") do |f|
@@ -39,22 +43,6 @@ module DPovray
       end                             
       puts "Processed a Task!"
       task
-    end
-  end
-  
-  module PartialImage
-    @queue = :partial_images
-    
-    def self.perform(completed_task)
-      
-    end
-  end
-  
-  module FinishedProject
-    @queue = :finished_project
-
-    def self.perform(params)
-      puts 'Project succefully completed.'
     end
   end
 end                         
