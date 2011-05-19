@@ -1,48 +1,33 @@
 module DPovray
   class Project
+    extend Machinist::Machinable
+    attr_accessor :name, :id, :image, :tasks, :povray_options
     
-    attr_reader :name, :id, :image, :tasks, :povray_options
-    
-    def initialize(params)
+    def initialize(params={})
       @name = params[:name]
       @id = rand(10000)
       @image = nil
-      @tasks = {}
-      @povray_options = { 'height' => params[:height], 'width' => params[:width], 'scene' => params[:scene] }
-    end        
-        
-    def self.create(params)                                                                                                    
-      project = 
+      @tasks = params[:tasks] || {}
+      if params[:povray_options]
+        @povray_options = params[:povray_options]
+      else
+        @povray_options = { 'height' => params[:height], 'width' => params[:width], 'scene' => params[:scene] }
+      end
+    end               
+    
+    def to_json(*a)
       {
-        'name'=> params[:name], 
-        'id'=> rand(10000), 
-        'image' => nil,
-        'tasks' => {},
-        'povray_options' =>
-          {
-            'height' => params[:height], 
-            'width' => params[:width], 
-            'scene' => params[:scene]
-          }        
-        }
+        'json_class' => self.class.name,
+        'data' => { 'name' => @name, 'id' => @id, 'image' => @image, 'tasks'=>@tasks, 'povray_options'=> @povray_options }
+      }.to_json(*a)
+    end           
+    
+    def self.json_create(o)
+      new(name: o['data']['name'], id: o['data']['id'], image: o['data']['image'], tasks:o['data']['tasks'], povray_options: o['data']['povray_options'])
     end
-
-    def self.perform(scene, params)                  
-     # `mkdir /tmp/dpovray`
-     # tmp_directory = "/tmp/dpovray/"+ params["name"] + '/'
-     # scene_file = tmp_directory + params["scene"]["filename"]
-     # system("mkdir #{tmp_directory}")                    
-     # File.open(scene_file, "w") do |f|
-     #     f.write(scene)
-     # end
-     # system("povray #{scene_file} +O#{tmp_directory}image.png")
-     # Resque.enqueue(FinishedProject, params["name"], Base64.encode64(File.read("#{tmp_directory}image.png")))     
-     # puts "Processed a job!"
+    
+    def self.completed?(project)    
+      project['tasks'].all? { |task| task['partial_image'] }  
     end
-  end
-
-  def self.completed?(project)    
-    project['tasks'].all? { |task| task['partial_image'] }  
-  end
-  
+  end    
 end

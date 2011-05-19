@@ -1,8 +1,9 @@
 require 'spec_helper'
 
-describe DPovray::Project do
-  describe 'Create a project' do
-    let(:params) { {name:'Gondar', scene:'blablabla', height:50, width:70 } }
+describe DPovray::Project do    
+  let(:params) { {name:'Gondar', scene:'blablabla', height:50, width:70 } }
+  
+  describe 'A Project should have' do    
     subject { DPovray::Project.new(params) }                        
         
     its(:name) { should == params[:name] }
@@ -13,16 +14,19 @@ describe DPovray::Project do
     
     describe "#povray_options" do
       subject { DPovray::Project.new(params).povray_options }      
+                                 
+      it "should pass povray_options as a hash" do
+        pending()
+      end
       
       its(['height']) { should == params[:height] }
       its(['width']) { should == params[:width] }
       its(['scene']) { should == params[:scene] }
     end       
-  end
+  end   
   
   describe "A project" do    
-    context "is completed" do
-      let(:project) { {'name'=>'Pov', 'tasks'=>{}, 'id'=>1000, 'povray_options'=>{'height'=>50, 'width'=>100, 'scene'=>'blabla'}, 'image'=>nil} }
+    context "is completed" do      
     end
     pending
   end

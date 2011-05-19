@@ -52,11 +52,12 @@ module DPovray
       task.partial_image = Base64.encode64(File.read("#{tmp_directory}image.png"))                
                               
       redis.multi do                                                   
-        project = JSON.parse(redis.hget('active_projects', task.project))                 
-        project["tasks"][task.order] = task
-        redis.hset('active_projects', task.project, JSON.dump(project))        
+        project = JSON.parse(redis.hget('active_projects', task.project))                                
+        project.tasks[task.order] = task
+        redis.hset('active_projects', task.project, project.to_json)        
       end                             
       puts "Processed a Task!"
+      `rm -rf #{tmp_directory}`
       task
     end
   end

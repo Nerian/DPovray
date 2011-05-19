@@ -29,7 +29,7 @@ describe DPovray::App do
        it "should save the partial images" do         
          projects = redis.hkeys('active_projects')         
          project = JSON.parse(redis.hget('active_projects', projects[0]))
-         project['tasks'].each_value do |task| 
+         project.tasks.each_value do |task| 
            task.partial_image.should be
          end                           
        end
@@ -38,7 +38,7 @@ describe DPovray::App do
          pending()
          projects = redis.hkeys('active_projects')         
          project = JSON.parse(redis.hget('active_projects', projects[0]))
-         project['image'].should be
+         project.image.should be
        end              
     end                
   end
