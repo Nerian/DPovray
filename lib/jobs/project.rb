@@ -1,5 +1,16 @@
 module DPovray
-  module Project    
+  class Project
+    
+    attr_reader :name, :id, :image, :tasks, :povray_options
+    
+    def initialize(params)
+      @name = params[:name]
+      @id = rand(10000)
+      @image = nil
+      @tasks = {}
+      @povray_options = { 'height' => params[:height], 'width' => params[:width], 'scene' => params[:scene] }
+    end        
+        
     def self.create(params)                                                                                                    
       project = 
       {
