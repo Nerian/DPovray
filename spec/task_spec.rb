@@ -5,8 +5,13 @@ describe DPovray::Task do
     context "be able to perform Task that contains the whole image" do
       let(:task){ DPovray::Task.make }
       
+      
       before :each do                                                  
         Redis.new.hset('active_projects', active_project['id'], JSON.dump(active_project))        
+      end
+      
+      it "the blue print and project should have the same id." do
+        pending()
       end
       
       it "and return the completed task" do                                     
@@ -19,7 +24,7 @@ describe DPovray::Task do
         project = JSON.parse(redis.hget('active_projects', task.project))
         project["tasks"][completed_task.order].should == completed_task
       end
-    end
+    end    
   end  
 end 
 
