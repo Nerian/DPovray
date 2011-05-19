@@ -51,7 +51,7 @@ module DPovray
       system("povray #{scene_file} +O#{tmp_directory}image.png 2>/dev/null")                                                                                                        
       task.partial_image = Base64.encode64(File.read("#{tmp_directory}image.png"))                
                               
-      redis.multi do                                             
+      redis.multi do                                                   
         project = JSON.parse(redis.hget('active_projects', task.project))                 
         project["tasks"][task.order] = task
         redis.hset('active_projects', task.project, JSON.dump(project))        
