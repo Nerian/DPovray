@@ -13,9 +13,8 @@ describe DPovray::Splitter do
         end      
         
         it "should generate a list of tasks" do
-          pending()
           tasks, project2 = DPovray::Splitter.split_project_in_many_tasks(project) 
-          tasks.each do |task|
+          tasks.each_value do |task|
             task.should be_a(DPovray::Task)
           end
         end 
