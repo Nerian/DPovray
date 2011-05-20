@@ -10,11 +10,11 @@ module DPovray
       end
       partial_images_names = save_partial_images_to_tmp_folder(partial_images)
       
-      (0..(partial_images_names.length()-2)).each do |i|
-        image1, image2 = partial_images_names[i], partial_images_names[i+1]         
-        puts "\ttail -c +19 #{image1} >> #{image2}"        
-        `tail -c +19 #{image1} >> #{image2}`        
-      end
+      
+      partial_images_names.each_cons 2 do |origin, destiny|
+        puts "\ttail -c +19 #{origin} >> #{destiny}"        
+        `tail -c +19 #{origin} >> #{destiny}`
+      end            
       puts 'Image merged'
       final_image = File.read(partial_images_names.last)                                                                               
     end
