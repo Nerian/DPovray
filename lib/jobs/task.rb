@@ -30,6 +30,10 @@ module DPovray
       @povray_options = arguments[:povray_options]
       @order = arguments[:order]      
             
+    end
+    
+    def <=>(o)      
+      @order.to_i <=> o.order.to_i
     end   
     
     def ==(another_task)
@@ -43,13 +47,15 @@ module DPovray
       task = JSON.parse(task)
       `mkdir -p /tmp/dpovray`
       tmp_directory = "/tmp/dpovray/"+ task.project.to_s + '/' + task.order + '/'
-      scene_file = tmp_directory + 'scene.pov'
+      scene_file = tmp_directory + 'scene.pov'                                   
+      options = task.povray_options
+      
       system("mkdir -p #{tmp_directory}")                    
       File.open(scene_file, "w") do |f|
           f.write(task.povray_options['scene'])
-      end
-      system("povray #{scene_file} +O#{tmp_directory}image.png 2>/dev/null")                                                                                                        
-      task.partial_image = Base64.encode64(File.read("#{tmp_directory}image.png"))                
+      end                                                         
+      system("povray +O#{tmp_directory}image.tga +H#{options['height']} +W#{options['width']} +SR#{options['start_row']} +ER#{options['end_row']} +SC#{options['start_column']} +EC#{options['end_column']} +FT #{scene_file} ")
+      task.partial_image = File.read("#{tmp_directory}image.tga")
                               
       redis.multi do                                                   
         project = JSON.parse(redis.hget('active_projects', task.project))                                
@@ -57,7 +63,7 @@ module DPovray
         redis.hset('active_projects', task.project, project.to_json)        
       end                             
       puts "Processed a Task!"
-      `rm -rf #{tmp_directory}`
+      #`rm -rf #{tmp_directory}`
       task
     end
   end
