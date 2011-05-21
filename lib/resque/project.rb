@@ -1,4 +1,5 @@
-module Resque
+require 'machinist'
+module Resque                     
   class Project
     extend Machinist::Machinable
     attr_accessor :name, :id, :image, :tasks, :povray_options

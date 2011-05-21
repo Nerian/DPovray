@@ -1,8 +1,8 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'splitter'
-require 'jobs/task'
-require 'jobs/project'
-require 'merger'
-require "redis"
+require 'redis' 
 require 'resque'
+require 'resque/project'
+require 'resque/splitter'
+require 'resque/jobs/task'
+require 'resque/merger'
 require 'resque/active_projects'
