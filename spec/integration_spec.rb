@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe DPovray::App do                                       
+describe 'Dpovray' do                                       
   describe 'The user should be able to 'do      
     context "#add a new project" do
       it "should create tasks " do
         send_a_scene                                   
-        Resque.queue(DPovray::Task.queue).length.should == 10                
+        Resque.queue(Resque::Task.queue).length.should == 10                
       end      
       
       it "Create active project" do
@@ -18,7 +18,7 @@ describe DPovray::App do
       context "not yet finished" do                                              
         before(:each) do
           send_a_scene
-          visit('/status')
+          visit('/project_statuses')
         end
         
         it "should show the name of projects" do
@@ -34,15 +34,15 @@ describe DPovray::App do
         before(:each) do
           send_a_scene          
           Resque.run! 
-          visit('/status')
+          visit('/project_statuses')
         end        
         
         it "should show the name of projects" do
           page.should have_content('Gondar')        
         end                                  
 
-        it "should show 'in progress' " do
-          page.should have_selector('img')
+        it "should show the download link " do
+          page.should have_content('Download Image')
         end
       end      
     end   
@@ -56,7 +56,7 @@ describe DPovray::App do
       end
       
        it "should render" do                           
-         Resque.queue(DPovray::Task.queue).length.should == 0           
+         Resque.queue(Resque::Task.queue).length.should == 0           
        end
        
        it "should save the partial images" do         

@@ -1,7 +1,7 @@
 require 'base64'
 require 'machinist'
 
-module DPovray    
+module Resque    
   class Task
     extend Machinist::Machinable                                    
     
@@ -61,7 +61,7 @@ module DPovray
       project = JSON.parse(redi.hget('active_projects', task.project))                                
       project.tasks[task.order] = task
       if project.completed?
-        project.image = DPovray::Merger.merge_partial_images_from_tasks(project.tasks)          
+        project.image = Resque::Merger.merge_partial_images_from_tasks(project.tasks)          
       end                                                        
       redi.hset('active_projects', task.project, project.to_json)                        
       puts "Processed a Task!"

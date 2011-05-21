@@ -1,4 +1,4 @@
-module DPovray
+module Resque
   module Merger
     
     def self.merge_partial_images_from_tasks(tasks)

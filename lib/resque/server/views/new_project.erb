@@ -1,0 +1,24 @@
+<h1>Upload the povray scene file</h1>
+
+<br>
+<form style='float:left' action='<%= to('/new_project')%>' method='POST' enctype='multipart/form-data'>	
+	<table border="0" cellspacing="5" cellpadding="5">		
+		<tr>	
+			<td><label for='name'>Give a name to this project</label></td>
+			<td><input type='text' id='name' name='name'/></td>
+		</tr>    	
+		<tr>
+			<td><label for='height'>Height of the image</label></td>
+			<td><input type='text' id='height' name='height'/></td>
+		</tr>
+		<tr>
+			<td><label for='width'>Width of the image</label></td>
+			<td><input type='text' id='width' name='width'/></td>
+		</tr>
+		<tr>
+			<td><label for='scene'>Scene file</label></td>
+			<td><input type='file' id='scene' name='scene'/></td>
+		</tr>  	
+	</table>   
+	<input id='submit' type="submit" />   
+</form>

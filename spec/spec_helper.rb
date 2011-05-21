@@ -3,15 +3,17 @@ require 'rack/test'
 require 'dpovray' 
 require 'capybara'   
 require 'capybara/rspec'
+require 'resque'
+require 'resque/server'
 require 'resque_unit'
 require 'machinist'
 require 'support/blueprints'
          
-include Capybara::DSL
+include Capybara::DSL            
 
-Capybara.app = DPovray::App
+Capybara.app = Resque::Server.new
 
-set :environment, :test 
+#set :environment, :test 
 
 def app 
   Sinatra::Application
@@ -35,7 +37,7 @@ def cleanup_redis
 end
          
 def send_a_scene
-  visit('/') 
+  visit('/new_project') 
   page.fill_in('name', :with => 'Gondar')
   page.fill_in('height', :with => '100')
   page.fill_in('width', :with => '100')

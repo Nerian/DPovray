@@ -11,7 +11,7 @@
 		<% if project.image.nil? %>
 			<td class='args'> In progress </td>
 		<% else %>
-			<td> <a href='/download/<%= project.id %>'>Download Image</a> </td>
+			<td> <a href='<%= to("/download/#{project.id}")%>'>Download Image</a> </td>
 		<% end %>
 	</tr>   
 	<% end %>

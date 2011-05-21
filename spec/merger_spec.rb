@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe DPovray::Splitter do
+describe Resque::Splitter do
   describe "Merge a project with many completed tasks" do
     subject do
       tasks = {}
       partial_images.each_with_index do |image, index|
-         tasks[index.to_s] = DPovray::Task.make(:order => index.to_s, :partial_image => image, :povray_options => {}) 
+         tasks[index.to_s] = Resque::Task.make(:order => index.to_s, :partial_image => image, :povray_options => {}) 
       end                                         
-      DPovray::Merger.merge_partial_images_from_tasks(tasks)
+      Resque::Merger.merge_partial_images_from_tasks(tasks)
     end                                                       
     
     it "should return an image" do
@@ -17,8 +17,8 @@ describe DPovray::Splitter do
   
   describe "Merge a project with one completed task" do
     subject do
-      tasks = { '0' => DPovray::Task.make(:order => '0', :partial_image => 'image', :povray_options => {})}
-      DPovray::Merger.merge_partial_images_from_tasks(tasks)
+      tasks = { '0' => Resque::Task.make(:order => '0', :partial_image => 'image', :povray_options => {})}
+      Resque::Merger.merge_partial_images_from_tasks(tasks)
     end                                                       
     
     it "should return an image" do
@@ -30,10 +30,10 @@ describe DPovray::Splitter do
     subject do
       tasks = 
       { 
-        '0' => DPovray::Task.make(:order => '0', :partial_image => 'first image', :povray_options => {}),
-        '1' => DPovray::Task.make(:order => '1', :partial_image => 'nineteen bits MagN here is the second image', :povray_options => {})
+        '0' => Resque::Task.make(:order => '0', :partial_image => 'first image', :povray_options => {}),
+        '1' => Resque::Task.make(:order => '1', :partial_image => 'nineteen bits MagN here is the second image', :povray_options => {})
       }
-      DPovray::Merger.merge_partial_images_from_tasks(tasks)
+      Resque::Merger.merge_partial_images_from_tasks(tasks)
     end                                                       
     
     it "should return an image" do

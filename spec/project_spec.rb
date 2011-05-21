@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe DPovray::Project do    
+describe Resque::Project do    
   let(:params) { {name:'Gondar', scene:'blablabla', height:50, width:70 } }
   
   describe 'A Project should have' do    
-    subject { DPovray::Project.new(params) }                        
+    subject { Resque::Project.new(params) }                        
         
     its(:name) { should == params[:name] }
     its(:id) { should be }
@@ -13,12 +13,8 @@ describe DPovray::Project do
     its(:povray_options) { should be }
     
     describe "#povray_options" do
-      subject { DPovray::Project.new(params).povray_options }      
-                                 
-      it "should pass povray_options as a hash" do
-        pending()
-      end
-      
+      subject { Resque::Project.new(params).povray_options }                                       
+            
       its(['height']) { should == params[:height] }
       its(['width']) { should == params[:width] }
       its(['scene']) { should == params[:scene] }
@@ -27,12 +23,12 @@ describe DPovray::Project do
   
   describe "A project" do    
     context "is completed" do
-      subject{ project = DPovray::Project.make(:completed) }      
+      subject{ project = Resque::Project.make(:completed) }      
       its(:completed?){ should == true}        
     end                                                     
     
     context "not completed" do
-      subject{ project = DPovray::Project.make(:with_tasks) }      
+      subject{ project = Resque::Project.make(:with_tasks) }      
       its(:completed?){ should == false}
     end           
   end

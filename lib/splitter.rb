@@ -1,4 +1,4 @@
-module DPovray
+module Resque
   module Splitter
     
     def self.split_project_in_many_tasks(project)                                         

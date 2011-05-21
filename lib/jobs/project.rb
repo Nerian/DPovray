@@ -1,4 +1,4 @@
-module DPovray
+module Resque
   class Project
     extend Machinist::Machinable
     attr_accessor :name, :id, :image, :tasks, :povray_options
