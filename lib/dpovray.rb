@@ -4,3 +4,5 @@ require 'splitter'
 require 'jobs/task'
 require 'jobs/project'
 require 'merger'
+require "redis"
+require 'resque'

@@ -7,7 +7,6 @@ require 'resque_unit'
 require 'machinist'
 require 'support/blueprints'
          
-
 include Capybara::DSL
 
 Capybara.app = DPovray::App

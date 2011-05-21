@@ -12,6 +12,39 @@ describe DPovray::App do
         send_a_scene                               
         redis.hlen('active_projects').should == 1
       end
+    end
+    
+    describe "see the status of projects" do                                           
+      context "not yet finished" do                                              
+        before(:each) do
+          send_a_scene
+          visit('/status')
+        end
+        
+        it "should show the name of projects" do
+          page.should have_content('Gondar')        
+        end                                  
+
+        it "should show 'in progress' " do
+          page.should have_content('In progress')
+        end
+      end
+      
+      context "finished" do
+        before(:each) do
+          send_a_scene          
+          Resque.run! 
+          visit('/status')
+        end        
+        
+        it "should show the name of projects" do
+          page.should have_content('Gondar')        
+        end                                  
+
+        it "should show 'in progress' " do
+          page.should have_selector('img')
+        end
+      end      
     end   
   end             
   

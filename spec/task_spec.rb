@@ -7,10 +7,10 @@ describe DPovray::Task do
       let(:active_project){ DPovray::Project.make(:with_tasks) }
       
       before :each do                                                     
-        Redis.new.hset('active_projects', active_project.id, active_project.to_json)                        
+        Redis.new.hset('active_projects', active_project.id, active_project.to_json)        
       end     
       
-      it "and return the completed task" do                                     
+      it "and return the completed task" do                                                 
         completed_task = DPovray::Task.perform(task.to_json)
         completed_task.partial_image.should be
       end

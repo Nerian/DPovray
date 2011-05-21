@@ -1,12 +1,28 @@
 require 'rubygems'
 require 'sinatra'
-require 'resque'
 require 'erb'                       
 
-module DPovray
-  class App < Sinatra::Base
+module DPovray             
+  class App < Sinatra::Base    
+    
     get '/' do
       erb :index
+    end
+    
+    get '/status' do
+      projects = Redis.new.hvals('active_projects')      
+      @projects = []                               
+      projects.each do |project|
+        @projects << JSON.parse(project)
+      end                                                           
+      erb :status
+    end
+    
+    get '/download/:id' do
+      project = JSON.parse(Redis.new.hget('active_projects', params[:id]))
+      response.headers['content_type'] = "application/octet-stream"
+      attachment(project.name+'.tga')
+      response.write(project.image)
     end
 
     post '/' do
