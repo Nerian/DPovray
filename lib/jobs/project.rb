@@ -5,8 +5,8 @@ module DPovray
     
     def initialize(params={})
       @name = params[:name]
-      @id = rand(10000)
-      @image = nil
+      @id = params[:id] || rand(10000) 
+      @image = params[:image] || nil
       @tasks = params[:tasks] || {}
       if params[:povray_options]
         @povray_options = params[:povray_options]
@@ -26,8 +26,8 @@ module DPovray
       new(name: o['data']['name'], id: o['data']['id'], image: o['data']['image'], tasks:o['data']['tasks'], povray_options: o['data']['povray_options'])
     end
     
-    def self.completed?(project)    
-      project['tasks'].all? { |task| task['partial_image'] }  
+    def completed?    
+      @tasks.values.all? { |task| not task.partial_image.nil? }  
     end
   end    
 end

@@ -26,8 +26,14 @@ describe DPovray::Project do
   end   
   
   describe "A project" do    
-    context "is completed" do      
-    end
-    pending
+    context "is completed" do
+      subject{ project = DPovray::Project.make(:completed) }      
+      its(:completed?){ should == true}        
+    end                                                     
+    
+    context "not completed" do
+      subject{ project = DPovray::Project.make(:with_tasks) }      
+      its(:completed?){ should == false}
+    end           
   end
 end

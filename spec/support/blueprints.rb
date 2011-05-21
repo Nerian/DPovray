@@ -13,6 +13,14 @@ DPovray::Project.blueprint(:with_tasks) do
   image { nil }                                                                                  
   povray_options { {'height'=>50, 'width'=>50, 'scene'=> scene_file } }    
   tasks { {'0'=> DPovray::Task.make(project: object.id, povray_options: object.povray_options)} }  
+end
+
+DPovray::Project.blueprint(:completed) do
+  name { 'yoquese' }
+  id { 1000 }
+  image { nil }                                                                                  
+  povray_options { {'height'=>50, 'width'=>50, 'scene'=> scene_file } }    
+  tasks { {'0'=> DPovray::Task.make(partial_image: 'blabla', project: object.id, povray_options: object.povray_options)} }  
 end             
 
 

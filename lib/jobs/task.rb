@@ -26,7 +26,7 @@ module DPovray
     
     def initialize(arguments={})
       @project = arguments[:project]
-      @partial_image = arguments[:partial_image]
+      @partial_image = arguments[:partial_image] || nil
       @povray_options = arguments[:povray_options]
       @order = arguments[:order]      
             
@@ -54,16 +54,19 @@ module DPovray
       File.open(scene_file, "w") do |f|
           f.write(task.povray_options['scene'])
       end                                                         
-      system("povray +O#{tmp_directory}image.tga +H#{options['height']} +W#{options['width']} +SR#{options['start_row']} +ER#{options['end_row']} +SC#{options['start_column']} +EC#{options['end_column']} +FT #{scene_file} ")
+      system("povray +O#{tmp_directory}image.tga +H#{options['height']} +W#{options['width']} +SR#{options['start_row']} +ER#{options['end_row']} +SC#{options['start_column']} +EC#{options['end_column']} +FT #{scene_file} 2>/dev/null")
       task.partial_image = File.read("#{tmp_directory}image.tga")
                               
       redis.multi do                                                   
         project = JSON.parse(redis.hget('active_projects', task.project))                                
         project.tasks[task.order] = task
+        if project.completed?
+          project.image = DPovray::Merger.merge_partial_images_from_tasks(project.tasks)          
+        end                                                        
         redis.hset('active_projects', task.project, project.to_json)        
       end                             
       puts "Processed a Task!"
-      #`rm -rf #{tmp_directory}`
+      `rm -rf #{tmp_directory}`
       task
     end
   end
