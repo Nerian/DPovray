@@ -15,4 +15,4 @@ use Rack::ShowExceptions
 #end
 
 run Rack::URLMap.new \
-  "/dpovray" => Resque::Server.new
+  "/" => Resque::Server.new
