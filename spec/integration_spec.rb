@@ -14,6 +14,16 @@ describe 'Dpovray' do
       end
     end
     
+    context "remove a Project" do
+      describe "#Tasks" do
+        pending()
+      end
+      
+      describe "Project" do
+        pending()
+      end
+    end
+    
     describe "see the status of projects" do                                           
       context "not yet finished" do                                              
         before(:each) do
