@@ -1,0 +1,2 @@
+rvm gemset create 'dpovray' 
+rvm gemset use 'dpovray'
