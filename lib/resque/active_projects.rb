@@ -1,12 +1,21 @@
 require 'resque/server'
 module Resque                       
-  module NewProject
+  module DPovray
     VIEW_PATH = File.join(File.dirname(__FILE__), 'server', 'views') 
 
     def self.registered(app)
       app.get '/new_project' do
         status_view(:new_project)
       end
+      
+      app.get '/project_statuses' do                                        
+        projects = Redis.new.hvals('active_projects')             
+        @projects = []                               
+        projects.each do |project|
+          @projects << JSON.parse(project)
+        end                                                           
+        status_view(:status)
+      end                                                     
       
       app.post '/new_project' do
         project = Project.new(
@@ -30,38 +39,17 @@ module Resque
         response.write(project.image)
       end
 
-      app.tabs << "New_Project"
+      app.tabs << "New_Project" 
+      app.tabs << "Project_statuses"
 
       app.helpers do
         def status_view(filename, options = {}, locals = {})
-          erb(File.read(File.join(::Resque::ActiveProjects::VIEW_PATH, "#{filename}.erb")), options, locals)
+          erb(File.read(File.join(::Resque::DPovray::VIEW_PATH, "#{filename}.erb")), options, locals)
         end                
       end
 
     end                
   end  
-
-  module ActiveProjects
-    VIEW_PATH = File.join(File.dirname(__FILE__), 'server', 'views') 
-
-    def self.registered(app)            
-      app.get '/project_statuses' do                                        
-        projects = Redis.new.hvals('active_projects')             
-        @projects = []                               
-        projects.each do |project|
-          @projects << JSON.parse(project)
-        end                                                           
-        status_view(:status)
-      end          
-      app.tabs << "Project_statuses"    
-      app.helpers do
-        def status_view(filename, options = {}, locals = {})
-          erb(File.read(File.join(::Resque::ActiveProjects::VIEW_PATH, "#{filename}.erb")), options, locals)
-        end                
-      end
-    end              
-  end
 end
 
-Resque::Server.register Resque::ActiveProjects
-Resque::Server.register Resque::NewProject
+Resque::Server.register Resque::DPovray
