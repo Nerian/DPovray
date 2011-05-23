@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
+require 'json'
 require 'redis' 
 require 'resque'
 require 'resque/project'
