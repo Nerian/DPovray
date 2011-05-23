@@ -1,15 +1,12 @@
 require 'rspec'
 require 'rack/test' 
-require 'dpovray' 
-require 'capybara'   
+require 'dpovray'  
 require 'capybara/rspec'
 require 'resque'
 require 'resque/server'
 require 'resque_unit'
 require 'machinist'
-require 'support/blueprints'
-         
-include Capybara::DSL            
+require 'support/blueprints'                     
 
 Capybara.app = Resque::Server.new
 
@@ -20,11 +17,16 @@ def app
 end     
 
 RSpec.configure do |conf|
-  conf.include Rack::Test::Methods    
+  conf.include Rack::Test::Methods
+  conf.include Capybara
   
   conf.before(:each) do    
     cleanup_redis    
     Resque.reset!
+  end
+  
+  conf.before(:suite) do
+    cleanup_redis    
   end
 end
 
