@@ -6,11 +6,9 @@ require 'resque'
 require 'resque/server'
 require 'resque_unit'
 require 'machinist'
-require 'support/blueprints'                     
+require 'support/blueprints'
 
 Capybara.app = Resque::Server.new
-
-#set :environment, :test 
 
 def app 
   Sinatra::Application

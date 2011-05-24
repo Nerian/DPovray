@@ -42,8 +42,11 @@ module Resque
       self.povray_options == another_task.povray_options                        
     end
                 
-    def self.perform(task)                                                 
-      task = JSON.parse(task)
+    def self.perform(project_id, task_order)
+      redi = Redis.new
+      project = JSON.parse(redi.hget('active_projects', project_id))
+      task = project.tasks[task_order.to_s]
+                                                       
       `mkdir -p /tmp/dpovray`
       tmp_directory = "/tmp/dpovray/"+ task.project.to_s + '/' + task.order + '/'
       scene_file = tmp_directory + 'scene.pov'                                   
@@ -56,7 +59,7 @@ module Resque
       system("povray +O#{tmp_directory}image.tga +H#{options['height']} +W#{options['width']} +SR#{options['start_row']} +ER#{options['end_row']} +SC#{options['start_column']} +EC#{options['end_column']} +FT #{scene_file} 2>/dev/null")
       task.partial_image = File.read("#{tmp_directory}image.tga")                              
          
-      redi = Redis.new        
+              
       project = JSON.parse(redi.hget('active_projects', task.project))                                
       project.tasks[task.order] = task
       if project.completed?

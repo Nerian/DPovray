@@ -1,4 +1,5 @@
 require 'resque/server'
+
 module Resque                       
   module DPovray
     VIEW_PATH = File.join(File.dirname(__FILE__), 'server', 'views') 
@@ -26,9 +27,13 @@ module Resque
 
         tasks, project = Splitter.split_project_in_many_tasks(project)                
         Redis.new.hset('active_projects', project.id, JSON.dump(project))
-        tasks.each_value do |task|
-          Resque.enqueue(Resque::Task, JSON.dump(task))
-        end                    
+        
+        Resque::Plugins::MultiStepTask.create(project.name) do |multistep|
+          tasks.each_value do |task|
+            multistep.add_job(Resque::Task, project.id, task.order)
+          end
+          
+        end                
         redirect to('/')
       end
 
@@ -47,7 +52,6 @@ module Resque
           erb(File.read(File.join(::Resque::DPovray::VIEW_PATH, "#{filename}.erb")), options, locals)
         end                
       end
-
     end                
   end  
 end
