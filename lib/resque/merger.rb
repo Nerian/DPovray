@@ -1,22 +1,14 @@
 module Resque  
   module InMemoryMerger
-    def self.merge_partial_images_from_tasks(hash_OrderImage)
-      puts 'Merging image'                               
-
-      #keys = hash_OrderImage.keys.sort{|a,b| a.to_i <=> b.to_i}.reverse
-
-      File.open('/tmp/hash','w') {|f| f.write hash_OrderImage.inspect}
-
-      final_image = []   
-
-      (hash_OrderImage.size..1).each do i
-        #hash_OrderImage[(i-1).to_s] += hash_OrderImage[(i-1).to_s].unpack('@19c*').pack('c*')
-
-        hash_OrderImage[(i-1).to_s] += hash_OrderImage[i.to_s].slice(0,19)
-      end     
-
-      final_image = hash_OrderImage['0']
-
+    def self.merge_partial_images_from_tasks(image_hash)
+      puts 'Merging image'                          
+                 
+      top_partial = image_hash['0']
+      image_hash.delete('0')                  
+      
+      image_hash.each { |k,v| v.slice!(1,18) }                      
+      final_image = [top_partial, (image_hash.keys.sort).collect{ |i| image_hash[i] }.join].join
+            
       puts 'Image merged'
       final_image                                                                                
     end               
