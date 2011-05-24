@@ -15,10 +15,10 @@ describe Resque::Task do
         completed_task.partial_image.should be
       end
 
-      it "and add that completed task to the Project" do                                
-        completed_task = Resque::Task.perform(active_project.id, task.order)                                                          
-        project = JSON.parse(redis.hget('active_projects', task.project))            
-        project.tasks[completed_task.order].should == completed_task
+      it "and add that completed task to the partial images list" do                                
+        completed_task = Resque::Task.perform(active_project.id, task.order)                                                                  
+        partial_image = redis.hget('resque:dpovray:images-for-project:'+active_project.id.to_s, completed_task.order)
+        partial_image.should == completed_task.partial_image                              
       end
     end    
   end  

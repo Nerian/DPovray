@@ -1,4 +1,5 @@
 source "http://rubygems.org"
+gem 'rake', '0.8.7'
 gem 'rack-test'
 gem 'rspec'
 gem 'sinatra'

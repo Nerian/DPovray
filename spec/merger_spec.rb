@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Resque::Splitter do
+describe Resque::Merger do
   describe "Merge a project with many completed tasks" do
     subject do
       tasks = {}
       partial_images.each_with_index do |image, index|
-         tasks[index.to_s] = Resque::Task.make(:order => index.to_s, :partial_image => image, :povray_options => {}) 
+         tasks[index.to_s] = image
       end                                         
       Resque::Merger.merge_partial_images_from_tasks(tasks)
     end                                                       
@@ -17,7 +17,7 @@ describe Resque::Splitter do
   
   describe "Merge a project with one completed task" do
     subject do
-      tasks = { '0' => Resque::Task.make(:order => '0', :partial_image => 'image', :povray_options => {})}
+      tasks = { '0' => 'image'}
       Resque::Merger.merge_partial_images_from_tasks(tasks)
     end                                                       
     
@@ -30,8 +30,8 @@ describe Resque::Splitter do
     subject do
       tasks = 
       { 
-        '0' => Resque::Task.make(:order => '0', :partial_image => 'first image', :povray_options => {}),
-        '1' => Resque::Task.make(:order => '1', :partial_image => 'nineteen bits MagN here is the second image', :povray_options => {})
+        '0' => 'first image',
+        '1' => 'nineteen bits MagN here is the second image'
       }
       Resque::Merger.merge_partial_images_from_tasks(tasks)
     end                                                       

@@ -30,9 +30,9 @@ module Resque
         
         Resque::Plugins::MultiStepTask.create(project.name) do |multistep|
           tasks.each_value do |task|
-            multistep.add_job(Resque::Task, project.id, task.order)
-          end
-          
+            multistep.add_job(Resque::Task, project.id, task.order)            
+          end                                                      
+          multistep.add_finalization_job Resque::Merge, project.id          
         end                
         redirect to('/')
       end
