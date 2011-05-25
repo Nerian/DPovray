@@ -3,10 +3,11 @@ gem 'rake', '0.8.7'
 gem 'rack-test'
 gem 'rspec'
 gem 'sinatra'
+gem "hiredis"
+gem 'redis', :require => ["redis/connection/hiredis", "redis"]
 gem 'resque'
 gem 'capybara'
 gem 'steak'
-gem 'redis'
 gem 'resque_unit'        
 gem 'i18n'
 gem 'machinist', '>= 2.0.0.beta2'
