@@ -1,7 +1,7 @@
 DPovray
 ========
 
-DPovray stands for distributed Povray. It is a tool that you can use to use many computers – a cluster – to render any nu ber of povray scenes in parallel.       
+DPovray stands for distributed Povray. It is a tool that you can use to use many computers – a cluster – to render any number of povray scenes in parallel.       
          
 
 Installing
