@@ -28,6 +28,8 @@ Configuration can be set at the file `config/resque`
 
 The database could be anywhere. It could over the internet if you wish. But given that DPovray store images it can consume a lot of bandwidth, so it is advisable that the DB runs on the local network – for speed.
 
+The password for accessing the Redis DB is read from ENV['AUTH'], an environment variable. You can set the variable on your .bash_profile, for example. It defaults to no password at all.
+
 
 Workers
 ===============
