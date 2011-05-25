@@ -6,7 +6,7 @@ module Resque
       
       hash_OrderImage = redi.hgetall('resque:dpovray:images-for-project:'+project_id.to_s)      
       
-      final_image = Resque::InMemoryMerger.merge_partial_images_from_tasks(hash_OrderImage)
+      final_image = Resque::Merger.merge_partial_images_from_tasks(hash_OrderImage)
       
       project = JSON.parse(redi.hget('active_projects', project_id))
       project.image = final_image
