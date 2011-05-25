@@ -43,7 +43,7 @@ module Resque
     end
                 
     def self.perform(project_id, task_order)
-      redi = Redis.new
+      redi = Resque.redis
       project = JSON.parse(redi.hget('active_projects', project_id))
       task = project.tasks[task_order.to_s]
                                                        

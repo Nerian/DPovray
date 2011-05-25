@@ -29,7 +29,7 @@ RSpec.configure do |conf|
 end
 
 def redis
-   Redis.new
+   Resque.redis
 end     
 
 def cleanup_redis

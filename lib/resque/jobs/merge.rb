@@ -2,7 +2,7 @@ module Resque
   module Merge
     
     def self.perform(project_id)
-      redi = Redis.new                                             
+      redi = Resque.redis                                             
       
       hash_OrderImage = redi.hgetall('resque:dpovray:images-for-project:'+project_id.to_s)      
       

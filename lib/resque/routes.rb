@@ -10,7 +10,7 @@ module Resque
       end
       
       app.get '/project_statuses' do                                        
-        projects = Redis.new.hvals('active_projects')             
+        projects = Resque.redis.hvals('active_projects')             
         @projects = []                               
         projects.each do |project|
           @projects << JSON.parse(project)
@@ -26,7 +26,7 @@ module Resque
           :scene => params['scene'][:tempfile].read)
 
         tasks, project = Splitter.split_project_in_many_tasks(project)                
-        Redis.new.hset('active_projects', project.id, JSON.dump(project))
+        Resque.redis.hset('active_projects', project.id, JSON.dump(project))
         
         Resque::Plugins::MultiStepTask.create(project.name) do |multistep|
           tasks.each_value do |task|
@@ -38,7 +38,7 @@ module Resque
       end
 
       app.get '/download/:id' do
-        project = JSON.parse(Redis.new.hget('active_projects', params[:id]))
+        project = JSON.parse(Resque.redis.hget('active_projects', params[:id]))
         response.headers['content_type'] = "application/octet-stream"
         attachment(project.name+'.tga')
         response.write(project.image)

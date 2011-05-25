@@ -1,7 +1,9 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'json'
 require 'redis' 
-require 'resque'
+require 'resque'  
+           
+require File.join(File.dirname(__FILE__), '..', 'config', 'initializers', 'resque')
 
 require 'resque/project'
 require 'resque/splitter'
