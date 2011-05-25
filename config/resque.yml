@@ -1,2 +1,4 @@
+#Default is development. Edit this file if your redis database runs on another machine or port.
+
 development: localhost:6379
 test: localhost:6379
